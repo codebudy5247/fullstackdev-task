@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// enum DoctorSpecialty {
+//   CARDIOLOGY
+//   DERMATOLOGY
+//   ENDOCRINOLOGY
+//   GASTROENTEROLOGY
+//   NEUROLOGY
+//   ORTHOPEDICS
+//   PEDIATRICS
+//   PSYCHIATRY
+//   RADIOLOGY
+//   SURGERY
+// }
+
+model Doctor {
+  id        String    @id @default(uuid())
+  name      String
+  contact   String    @unique
+  password  String
+  specialty String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  patients  Patient[]
+
+  @@map("doctor")
+}
+
+model Patient {
+  id             String           @id @default(uuid())
+  name           String
+  age            Int
+  gender         String
+  bloodtype      String
+  address        String
+  phone          String
+  medicalHistory String
+  doctor         Doctor           @relation(fields: [doctorId], references: [id])
+  doctorId       String
+
+  @@map("patient")
+}
+
